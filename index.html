@@ -1,21 +1,34 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ASTRAL ARCHIVE</title>
 
 <style>
+:root {
+  --bg: #030407;
+  --white: #eeeeF4;
+  --muted: #9295a8;
+  --gold: #d8c9a0;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: #080d1c;
-  color: #e8e5f2;
-  font-family: Georgia, serif;
+  background: var(--bg);
+  color: var(--white);
+  font-family: Georgia, "Times New Roman", serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+button {
+  font: inherit;
 }
 
 /* LOADING */
@@ -24,199 +37,311 @@ body {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background:
-    radial-gradient(ellipse at 50% 45%, #182544 0%, #0b1228 48%, #050914 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
   overflow: hidden;
-  transition: opacity 1.2s ease, visibility 1.2s;
+  background:
+    radial-gradient(ellipse at 50% 45%, #101321 0%, #070910 40%, #030407 78%);
 }
 
-#loading.hide {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.loading-title {
-  font-size: 30px;
-  letter-spacing: 8px;
-  color: #e8e2f5;
-  text-align: center;
-  animation: glow 3s infinite alternate;
-}
-
-.loading-sub {
-  margin-top: 15px;
-  font-size: 10px;
-  letter-spacing: 4px;
-  color: #a6abc9;
-}
-
-.loading-message {
-  margin-top: 55px;
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: #c3bddb;
-}
-
-.star {
+.loading-stars,
+#detailStars {
   position: absolute;
-  background: white;
+  inset: 0;
+  pointer-events: none;
+}
+
+.loading-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
   border-radius: 50%;
-  animation: twinkle 2s infinite alternate;
+  background: #fff;
+  opacity: .4;
+  animation: twinkle 3s ease-in-out infinite alternate;
 }
 
 @keyframes twinkle {
   from { opacity: .15; transform: scale(.7); }
-  to { opacity: 1; transform: scale(1.4); }
+  to { opacity: .9; transform: scale(1.5); }
+}
+
+.instruction {
+  position: absolute;
+  right: 8%;
+  bottom: 8%;
+  z-index: 5;
+  text-align: right;
+  color: rgba(235, 235, 245, .75);
+  letter-spacing: .22em;
+  font-size: 11px;
+  line-height: 2;
+  pointer-events: none;
+}
+
+.instruction span {
+  display: block;
+  font-family: sans-serif;
+  font-size: 10px;
+  letter-spacing: .18em;
+  color: rgba(235, 235, 245, .45);
 }
 
 .meteor {
   position: absolute;
-  top: 12%;
-  right: -25%;
-  width: 190px;
+  width: 130px;
   height: 2px;
-  opacity: 0;
+  z-index: 10;
+  cursor: pointer;
   transform: rotate(135deg);
-  background: linear-gradient(to left, transparent, #fff, #c8d9ff);
-  box-shadow: 0 0 12px #d6e2ff, 0 0 28px #9bbcff;
-  animation: shooting 1.5s ease-in 1.8s forwards;
+  transform-origin: center;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.3) 35%,
+    #fff 100%
+  );
+  box-shadow: 0 0 8px #fff, 0 0 20px rgba(160,190,255,.8);
+  animation: meteorFlight 2.8s linear forwards;
 }
 
-@keyframes shooting {
+.meteor::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 12px 5px white, 0 0 28px 10px rgba(160,190,255,.7);
+}
+
+@keyframes meteorFlight {
   0% {
+    left: 110%;
+    top: -5%;
     opacity: 0;
-    transform: translate(0, 0) rotate(135deg);
   }
   10% { opacity: 1; }
-  85% { opacity: 1; }
+  90% { opacity: 1; }
   100% {
+    left: -25%;
+    top: 110%;
     opacity: 0;
-    transform: translate(-125vw, 125vh) rotate(135deg);
   }
 }
 
-@keyframes glow {
-  from { opacity: .65; }
-  to { opacity: 1; text-shadow: 0 0 18px #a9b9ed; }
+.meteor.caught {
+  animation: starCatch .6s ease-out forwards;
+}
+
+@keyframes starCatch {
+  to {
+    opacity: 0;
+    transform: rotate(135deg) scale(3);
+    filter: brightness(3);
+  }
 }
 
 /* MAIN */
 
-header {
-  text-align: center;
-  padding: 90px 20px 65px;
+#main {
+  display: none;
+  min-height: 100vh;
   background:
-    radial-gradient(ellipse at top, #1c2948, transparent 75%);
+    radial-gradient(ellipse at top, #111629 0%, #070910 45%, #030407 100%);
 }
 
-.eyebrow {
-  font-size: 10px;
-  letter-spacing: 5px;
-  color: #a5abc8;
+header {
+  padding: 38px 7% 24px;
+  text-align: center;
 }
 
-h1 {
-  font-size: 34px;
+.site-title {
+  font-size: 23px;
+  letter-spacing: .28em;
   font-weight: normal;
-  letter-spacing: 7px;
-  margin: 25px 0 15px;
 }
 
-.subtitle {
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: #a5abc8;
-}
-
-.intro {
-  text-align: center;
-  padding: 30px 24px 65px;
-  color: #b9b8cc;
-  font-size: 12px;
-  line-height: 2.3;
-}
-
-section {
-  max-width: 900px;
-  margin: auto;
-  padding: 0 22px 90px;
-}
-
-.section-title {
-  text-align: center;
-  font-size: 16px;
-  letter-spacing: 5px;
-  font-weight: normal;
-  margin-bottom: 12px;
-}
-
-.section-sub {
-  text-align: center;
+.site-subtitle {
+  margin-top: 10px;
+  color: var(--muted);
+  font-family: sans-serif;
   font-size: 9px;
-  letter-spacing: 3px;
-  color: #858da9;
-  margin-bottom: 38px;
+  letter-spacing: .3em;
 }
 
-.characters {
+.character-list {
+  width: min(900px, 88%);
+  margin: 30px auto 80px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 35px 22px;
 }
 
-.character {
-  min-height: 180px;
-  border: 1px solid #303951;
-  background: linear-gradient(145deg, #17213a, #0b1122);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.character-card {
+  cursor: pointer;
   text-align: center;
-  padding: 20px 10px;
-  transition: .3s;
 }
 
-.character:hover {
-  border-color: #a7a9d0;
-  background: #1c2945;
+.character-image {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+  background: #101321;
+  border: 1px solid rgba(210,210,230,.12);
+  transition: .5s;
 }
 
-.character-symbol {
-  font-size: 27px;
-  color: #c5c3e0;
-  margin-bottom: 17px;
+.character-card:active .character-image {
+  opacity: .7;
 }
 
 .character-name {
-  font-size: 13px;
-  letter-spacing: 3px;
+  margin-top: 15px;
+  font-size: 17px;
+  letter-spacing: .12em;
 }
 
-.character-info {
+.character-jp {
+  margin-top: 5px;
+  font-family: sans-serif;
+  font-size: 12px;
+  letter-spacing: .15em;
+}
+
+.character-reading {
+  margin-top: 5px;
+  color: var(--muted);
+  font-family: sans-serif;
   font-size: 9px;
-  letter-spacing: 2px;
-  color: #939bb8;
-  margin-top: 12px;
+  letter-spacing: .15em;
 }
 
-footer {
+/* DETAIL */
+
+#detail {
+  display: none;
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  z-index: 30;
+  background: #030407;
+}
+
+.detail-sky {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 40%, #11182a 0%, #080b15 48%, #030407 100%);
+  pointer-events: none;
+}
+
+#detailStars {
+  position: fixed;
+  z-index: 0;
+}
+
+.detail-content {
+  position: relative;
+  z-index: 2;
+  width: min(650px, 88%);
+  margin: auto;
+  padding: 35px 0 70px;
+}
+
+.back-button {
+  border: 0;
+  background: none;
+  color: rgba(255,255,255,.7);
+  letter-spacing: .15em;
+  font-size: 11px;
+  padding: 12px 0;
+  cursor: pointer;
+}
+
+.detail-image {
+  display: block;
+  width: min(330px, 85%);
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  margin: 25px auto;
+  border: 1px solid rgba(220,220,240,.2);
+}
+
+.detail-name {
   text-align: center;
-  padding: 35px 15px;
-  border-top: 1px solid #252e43;
-  color: #77809d;
-  font-size: 9px;
-  letter-spacing: 3px;
+  font-size: 26px;
+  letter-spacing: .15em;
+  font-weight: normal;
+}
+
+.detail-jp {
+  text-align: center;
+  font-family: sans-serif;
+  font-size: 13px;
+  letter-spacing: .2em;
+  margin-top: 10px;
+}
+
+.detail-reading {
+  text-align: center;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 6px;
+}
+
+.section {
+  margin-top: 42px;
+}
+
+.section-title {
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: .25em;
+  margin-bottom: 15px;
+}
+
+.section-text {
+  white-space: pre-wrap;
+  line-height: 2;
+  font-family: sans-serif;
+  font-size: 13px;
+  color: rgba(240,240,248,.8);
+}
+
+.prompt-box {
+  padding: 18px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(220,220,240,.14);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: sans-serif;
+  font-size: 12px;
+  line-height: 1.8;
+  color: rgba(240,240,248,.8);
+}
+
+.copy-button {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid rgba(220,220,240,.3);
+  background: rgba(255,255,255,.06);
+  color: white;
+  letter-spacing: .2em;
+  font-size: 10px;
+  cursor: pointer;
 }
 
 @media (max-width: 480px) {
-  h1 { font-size: 27px; }
-  .characters { gap: 10px; }
-  .character { min-height: 155px; }
+  .character-list {
+    gap: 28px 14px;
+  }
+  .character-name {
+    font-size: 14px;
+  }
 }
 </style>
 </head>
@@ -224,80 +349,218 @@ footer {
 <body>
 
 <!-- LOADING SCREEN -->
-
 <div id="loading">
-  <div class="loading-title">ASTRAL ARCHIVE</div>
-  <div class="loading-sub">A WORLD OF CHARACTERS</div>
-  <div class="loading-message">WAITING FOR A FALLING STAR</div>
-  <div class="meteor"></div>
-</div>
+  <div class="loading-stars" id="loadingStars"></div>
 
-<!-- MAIN PAGE -->
-
-<header>
-  <div class="eyebrow">✦ CELESTIAL COLLECTION ✦</div>
-  <h1>ASTRAL ARCHIVE</h1>
-  <div class="subtitle">CHARACTER PROMPT LIBRARY</div>
-</header>
-
-<div class="intro">
-  Welcome to the archive.<br>
-  A collection of characters and their stories,<br>
-  hidden beneath the stars.
-</div>
-
-<section>
-  <h2 class="section-title">CHARACTER ARCHIVE</h2>
-  <div class="section-sub">✦ EXPLORE THE COLLECTION ✦</div>
-
-  <div class="characters">
-
-    <div class="character">
-      <div class="character-symbol">✧</div>
-      <div class="character-name">NEW CHARACTER</div>
-      <div class="character-info">COMING SOON</div>
-    </div>
-
-    <div class="character">
-      <div class="character-symbol">☾</div>
-      <div class="character-name">NEW CHARACTER</div>
-      <div class="character-info">COMING SOON</div>
-    </div>
-
+  <div class="instruction">
+    CATCH THE STAR
+    <span>星を掴んで</span>
   </div>
-</section>
+</div>
 
-<footer>
-  ASTRAL ARCHIVE · UNDER THE SAME STARS
-</footer>
+<!-- CHARACTER LIST -->
+<div id="main">
+  <header>
+    <div class="site-title">ASTRAL ARCHIVE</div>
+    <div class="site-subtitle">A COLLECTION OF CHARACTERS</div>
+  </header>
+  <div class="character-list" id="characterList"></div>
+</div>
+
+<!-- CHARACTER DETAIL -->
+<div id="detail">
+  <div class="detail-sky"></div>
+  <div id="detailStars"></div>
+  <div class="detail-content" id="detailContent"></div>
+</div>
 
 <script>
-/* RANDOM STARS */
+/* CHARACTER DATA
+   ここにキャラクター情報を追加していくよ */
 
-const loading = document.getElementById("loading");
+const characters = [
+  {
+    name: "Character 01",
+    japanese: "キャラクター名",
+    reading: "よみがな",
+    image: "https://placehold.co/600x800/101321/eeeeee?text=CHARACTER+01",
+    profile: "プロフィールをここに入力",
+    description: "キャラクターの説明をここに入力。",
+    prompt: "ここに画像生成用プロンプトを入力"
+  },
+  {
+    name: "Character 02",
+    japanese: "キャラクター名",
+    reading: "よみがな",
+    image: "https://placehold.co/600x800/101321/eeeeee?text=CHARACTER+02",
+    profile: "プロフィールをここに入力",
+    description: "キャラクターの説明をここに入力。",
+    prompt: "ここに画像生成用プロンプトを入力"
+  }
+];
 
-for (let i = 0; i < 65; i++) {
+/* LOADING STARS */
+
+const loadingStars = document.getElementById("loadingStars");
+
+for (let i = 0; i < 100; i++) {
   const star = document.createElement("div");
-  star.className = "star";
-
-  const size = Math.random() * 2.5 + 1;
-
-  star.style.width = size + "px";
-  star.style.height = size + "px";
+  star.className = "loading-star";
   star.style.left = Math.random() * 100 + "%";
   star.style.top = Math.random() * 100 + "%";
-  star.style.animationDelay = Math.random() * 3 + "s";
-
-  loading.appendChild(star);
+  star.style.animationDelay = Math.random() * 4 + "s";
+  star.style.animationDuration = (2 + Math.random() * 4) + "s";
+  loadingStars.appendChild(star);
 }
 
-/* FINISH LOADING */
+/* METEOR */
 
-window.addEventListener("load", () => {
+let meteorTimer = null;
+let currentMeteor = null;
+let hasEntered = false;
+
+function createMeteor() {
+  if (hasEntered) return;
+
+  const meteor = document.createElement("div");
+  meteor.className = "meteor";
+  document.getElementById("loading").appendChild(meteor);
+  currentMeteor = meteor;
+
+  meteor.addEventListener("click", catchStar);
+  meteor.addEventListener("animationend", () => {
+    if (meteor.parentNode) meteor.remove();
+
+    if (!hasEntered) {
+      meteorTimer = setTimeout(createMeteor, 1300);
+    }
+  }, { once: true });
+}
+
+function catchStar(event) {
+  if (hasEntered) return;
+  hasEntered = true;
+
+  const meteor = event.currentTarget;
+  meteor.classList.add("caught");
+
+  clearTimeout(meteorTimer);
+
   setTimeout(() => {
-    loading.classList.add("hide");
-  }, 3500);
-});
+    document.getElementById("loading").style.transition = "opacity 1.2s";
+    document.getElementById("loading").style.opacity = "0";
+
+    setTimeout(() => {
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("main").style.display = "block";
+    }, 1200);
+  }, 450);
+}
+
+setTimeout(createMeteor, 900);
+
+/* CHARACTER LIST */
+
+function renderCharacters() {
+  const list = document.getElementById("characterList");
+  list.innerHTML = "";
+
+  characters.forEach((character, index) => {
+    const card = document.createElement("div");
+    card.className = "character-card";
+
+    card.innerHTML = `
+      <img class="character-image" src="${character.image}" alt="">
+      <div class="character-name">${character.name}</div>
+      <div class="character-jp">${character.japanese}</div>
+      <div class="character-reading">${character.reading}</div>
+    `;
+
+    card.addEventListener("click", () => openDetail(index));
+    list.appendChild(card);
+  });
+}
+
+renderCharacters();
+
+/* DETAIL STARS */
+
+const detailStars = document.getElementById("detailStars");
+
+for (let i = 0; i < 420; i++) {
+  const star = document.createElement("div");
+  star.className = "loading-star";
+  star.style.left = Math.random() * 100 + "%";
+  star.style.top = Math.random() * 100 + "%";
+  star.style.animationDelay = Math.random() * 5 + "s";
+  star.style.animationDuration = (2 + Math.random() * 5) + "s";
+  star.style.opacity = Math.random() * .8;
+  detailStars.appendChild(star);
+}
+
+/* OPEN DETAIL */
+
+function openDetail(index) {
+  const c = characters[index];
+  const detail = document.getElementById("detail");
+  const content = document.getElementById("detailContent");
+
+  content.innerHTML = `
+    <button class="back-button" onclick="closeDetail()">← BACK</button>
+
+    <img class="detail-image" src="${c.image}" alt="">
+
+    <h1 class="detail-name">${c.name}</h1>
+    <div class="detail-jp">${c.japanese}</div>
+    <div class="detail-reading">${c.reading}</div>
+
+    <div class="section">
+      <div class="section-title">PROFILE</div>
+      <div class="section-text">${c.profile}</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">DESCRIPTION</div>
+      <div class="section-text">${c.description}</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">PROMPT</div>
+      <div class="prompt-box" id="promptText"></div>
+      <button class="copy-button" onclick="copyPrompt()">COPY PROMPT</button>
+    </div>
+  `;
+
+  document.getElementById("promptText").textContent = c.prompt;
+  detail.style.display = "block";
+  detail.scrollTop = 0;
+}
+
+function closeDetail() {
+  document.getElementById("detail").style.display = "none";
+}
+
+/* COPY PROMPT */
+
+function copyPrompt() {
+  const text = document.getElementById("promptText").textContent;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const button = document.querySelector(".copy-button");
+    button.textContent = "COPIED ✓";
+
+    setTimeout(() => {
+      button.textContent = "COPY PROMPT";
+    }, 1800);
+  }).catch(() => {
+    const range = document.createRange();
+    range.selectNodeContents(document.getElementById("promptText"));
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    alert("プロンプトを選択したよ。コピーしてね。");
+  });
+}
 </script>
 
 </body>
