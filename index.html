@@ -14,9 +14,7 @@
   --gold: #c9bd9d;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html, body {
   margin: 0;
@@ -26,17 +24,10 @@ html, body {
   font-family: Georgia, "Times New Roman", serif;
 }
 
-body {
-  overflow-x: hidden;
-}
+body { overflow-x: hidden; }
+button, input { font: inherit; }
 
-button {
-  font: inherit;
-}
-
-/* =========================
-   LOADING
-========================= */
+/* LOADING */
 
 #loading {
   position: fixed;
@@ -66,14 +57,8 @@ button {
 }
 
 @keyframes twinkle {
-  from {
-    opacity: .12;
-    transform: scale(.7);
-  }
-  to {
-    opacity: .8;
-    transform: scale(1.5);
-  }
+  from { opacity: .12; transform: scale(.7); }
+  to { opacity: .8; transform: scale(1.5); }
 }
 
 .instruction {
@@ -106,8 +91,6 @@ button {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   transform: rotate(135deg);
-  transform-origin: center;
-  background: transparent;
 }
 
 .meteor::before {
@@ -141,18 +124,10 @@ button {
 }
 
 @keyframes meteorFlight {
-  0% {
-    left: 110%;
-    top: -5%;
-    opacity: 0;
-  }
+  0% { left: 110%; top: -5%; opacity: 0; }
   10% { opacity: 1; }
   90% { opacity: 1; }
-  100% {
-    left: -25%;
-    top: 110%;
-    opacity: 0;
-  }
+  100% { left: -25%; top: 110%; opacity: 0; }
 }
 
 @keyframes starCatch {
@@ -163,9 +138,7 @@ button {
   }
 }
 
-/* =========================
-   CHARACTER LIST
-========================= */
+/* MAIN */
 
 #main {
   display: none;
@@ -177,11 +150,7 @@ button {
     radial-gradient(ellipse at 50% 0%, #101629 0%, #070b15 48%, #04060c 100%);
 }
 
-#mainStars {
-  z-index: 0;
-}
-
-/* 星座の配置 */
+#mainStars { z-index: 0; }
 
 .constellation-layer {
   position: absolute;
@@ -219,14 +188,8 @@ button {
 }
 
 @keyframes constellationGlow {
-  0% {
-    opacity: .18;
-    filter: drop-shadow(0 0 1px #dce7ff);
-  }
-  100% {
-    opacity: .9;
-    filter: drop-shadow(0 0 7px #dce7ff);
-  }
+  0% { opacity: .18; filter: drop-shadow(0 0 1px #dce7ff); }
+  100% { opacity: .9; filter: drop-shadow(0 0 7px #dce7ff); }
 }
 
 .constellation-one {
@@ -257,9 +220,8 @@ button {
   transform: rotate(-15deg);
 }
 
-/* 一覧の文字・画像は前面 */
-
 #main header,
+#main .page-controls,
 #main .character-list {
   position: relative;
   z-index: 2;
@@ -300,9 +262,127 @@ header {
   letter-spacing: .12em;
 }
 
+/* CATEGORY */
+
+.page-controls {
+  width: min(900px, 88%);
+  margin: 8px auto 0;
+}
+
+.category-switch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+
+.category-button {
+  width: 116px;
+  min-height: 92px;
+  padding: 12px 8px 10px;
+  border: 1px solid rgba(210,220,245,.17);
+  border-radius: 3px;
+  background: rgba(10,16,31,.48);
+  color: rgba(225,231,245,.65);
+  cursor: pointer;
+  transition: .35s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.category-button.active {
+  border-color: rgba(211,199,164,.65);
+  background: rgba(201,189,157,.075);
+  color: #eee8d8;
+  box-shadow: 0 0 18px rgba(190,190,220,.07);
+}
+
+.category-button:active { transform: scale(.96); }
+
+.category-icon {
+  display: block;
+  width: 56px;
+  height: 42px;
+  margin: 0 auto 8px;
+  overflow: visible;
+}
+
+.category-icon line,
+.category-icon polyline {
+  fill: none;
+  stroke: #cbd8f0;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .75;
+}
+
+.category-icon circle {
+  fill: #dce8ff;
+  filter: drop-shadow(0 0 3px #dce8ff);
+}
+
+.category-button.active .category-icon circle {
+  fill: #fff;
+  filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 8px #cbd8ff);
+}
+
+.category-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: .16em;
+  white-space: nowrap;
+}
+
+/* SEARCH */
+
+.list-tools {
+  margin: 28px auto 0;
+  width: min(900px, 100%);
+}
+
+.character-count {
+  margin-bottom: 12px;
+  color: rgba(220,225,240,.65);
+  font-family: sans-serif;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-align: right;
+}
+
+.search-wrap { position: relative; }
+
+.search-input {
+  display: block;
+  width: 100%;
+  padding: 13px 40px 13px 15px;
+  border: 1px solid rgba(210,220,240,.18);
+  border-radius: 2px;
+  outline: none;
+  background: rgba(5,9,19,.55);
+  color: #f0f1f6;
+  font-family: sans-serif;
+  font-size: 12px;
+  letter-spacing: .08em;
+}
+
+.search-input::placeholder { color: rgba(190,198,218,.42); }
+.search-input:focus { border-color: rgba(201,189,157,.55); }
+
+.search-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(210,220,240,.5);
+  font-size: 15px;
+  pointer-events: none;
+}
+
+/* CHARACTER LIST */
+
 .character-list {
   width: min(900px, 88%);
-  margin: 35px auto 80px;
+  margin: 28px auto 80px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 35px 22px;
@@ -311,26 +391,46 @@ header {
 .character-card {
   cursor: pointer;
   text-align: center;
+  min-width: 0;
+}
+
+.character-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: #101321;
+  border: 1px solid rgba(210,210,230,.12);
+  overflow: hidden;
 }
 
 .character-image {
   width: 100%;
-  aspect-ratio: 3 / 4;
+  height: 100%;
   object-fit: cover;
   display: block;
-  background: #101321;
-  border: 1px solid rgba(210,210,230,.12);
   transition: opacity .3s;
 }
 
-.character-card:active .character-image {
-  opacity: .7;
+.character-card:active .character-image { opacity: .7; }
+
+.character-number {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  z-index: 2;
+  padding: 5px 7px;
+  color: rgba(245,246,250,.9);
+  background: rgba(4,7,14,.7);
+  border: 1px solid rgba(220,225,240,.2);
+  font-family: sans-serif;
+  font-size: 9px;
+  letter-spacing: .1em;
 }
 
 .character-name {
   margin-top: 15px;
-  font-size: 17px;
-  letter-spacing: .12em;
+  font-size: 21px;
+  letter-spacing: .14em;
 }
 
 .character-jp {
@@ -340,18 +440,127 @@ header {
   letter-spacing: .15em;
 }
 
-.character-reading {
-  margin-top: 5px;
-  color: var(--muted);
+.no-results {
+  grid-column: 1 / -1;
+  padding: 55px 10px;
+  color: rgba(220,225,240,.5);
+  text-align: center;
   font-family: sans-serif;
-  font-size: 10px;
-  letter-spacing: .15em;
+  font-size: 12px;
+  letter-spacing: .12em;
+  line-height: 2;
 }
 
-/* =========================
-   CHARACTER DETAIL
-   星・星座なしのシンプルなネイビー
-========================= */
+/* CONSTELLATION CUT-IN */
+
+#constellationCutin {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3,6,15,.91);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#constellationCutin.show {
+  visibility: visible;
+  animation: cutinFade 2.1s ease forwards;
+}
+
+.cutin-inner {
+  width: min(340px, 78vw);
+  text-align: center;
+  transform: scale(.88);
+}
+
+#constellationCutin.show .cutin-inner {
+  animation: constellationReveal 2.1s ease forwards;
+}
+
+.cutin-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.cutin-lines {
+  fill: none;
+  stroke: rgba(205,220,248,.85);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+}
+
+#constellationCutin.show .cutin-lines {
+  animation: drawConstellation 1.05s ease .28s forwards;
+}
+
+.cutin-star {
+  fill: #fff;
+  opacity: 0;
+  filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #a9c8ff);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#constellationCutin.show .cutin-star {
+  animation: starAppear .35s ease forwards;
+}
+
+#constellationCutin.show .cutin-star:nth-of-type(2) { animation-delay: .12s; }
+#constellationCutin.show .cutin-star:nth-of-type(3) { animation-delay: .22s; }
+#constellationCutin.show .cutin-star:nth-of-type(4) { animation-delay: .32s; }
+#constellationCutin.show .cutin-star:nth-of-type(5) { animation-delay: .42s; }
+#constellationCutin.show .cutin-star:nth-of-type(6) { animation-delay: .52s; }
+#constellationCutin.show .cutin-star:nth-of-type(7) { animation-delay: .62s; }
+
+.cutin-name {
+  margin-top: 22px;
+  color: #eee8d8;
+  font-size: 13px;
+  letter-spacing: .3em;
+  opacity: 0;
+}
+
+#constellationCutin.show .cutin-name {
+  animation: nameAppear .7s ease .65s forwards;
+}
+
+@keyframes cutinFade {
+  0% { opacity: 0; }
+  12% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes constellationReveal {
+  0% { transform: scale(.82); opacity: .4; }
+  25% { transform: scale(1); opacity: 1; }
+  75% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.08); opacity: 0; }
+}
+
+@keyframes drawConstellation {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes starAppear {
+  0% { opacity: 0; transform: scale(.2); }
+  70% { opacity: 1; transform: scale(1.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes nameAppear {
+  to { opacity: .85; }
+}
+
+/* DETAIL */
 
 #detail {
   display: none;
@@ -370,8 +579,6 @@ header {
   padding: 25px 0 75px;
 }
 
-/* 戻るボタン */
-
 .back-button {
   display: inline-block;
   border: 1px solid rgba(220,225,240,.2);
@@ -384,8 +591,6 @@ header {
   cursor: pointer;
 }
 
-/* キャラクター画像 */
-
 .detail-image {
   display: block;
   width: min(340px, 88%);
@@ -395,12 +600,10 @@ header {
   border: 1px solid rgba(220,220,240,.16);
 }
 
-/* 名前 */
-
 .detail-name {
   text-align: center;
-  font-size: 27px;
-  letter-spacing: .13em;
+  font-size: 29px;
+  letter-spacing: .14em;
   font-weight: normal;
   line-height: 1.5;
   margin: 0;
@@ -411,19 +614,10 @@ header {
   font-family: sans-serif;
   font-size: 15px;
   letter-spacing: .18em;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
-.detail-reading {
-  text-align: center;
-  color: #9ca4b8;
-  font-family: sans-serif;
-  font-size: 11px;
-  margin-top: 8px;
-  letter-spacing: .12em;
-}
-
-/* 情報セクション */
+/* PROFILE */
 
 .section {
   margin-top: 42px;
@@ -435,7 +629,17 @@ header {
   color: var(--gold);
   font-size: 12px;
   letter-spacing: .22em;
-  margin-bottom: 18px;
+  margin-bottom: 22px;
+}
+
+.profile-item { margin-top: 21px; }
+
+.profile-label {
+  margin-bottom: 8px;
+  color: #aeb8ce;
+  font-family: sans-serif;
+  font-size: 10px;
+  letter-spacing: .2em;
 }
 
 .section-text {
@@ -447,7 +651,31 @@ header {
   overflow-wrap: anywhere;
 }
 
-/* プロンプト */
+/* COPY */
+
+.copy-button {
+  display: block;
+  width: 100%;
+  margin-top: 42px;
+  padding: 17px;
+  border: 1px solid rgba(220,225,240,.28);
+  border-radius: 2px;
+  background: #111a2b;
+  color: white;
+  letter-spacing: .2em;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.copy-button:active { background: #1b2940; }
+
+/* PROMPT */
+
+.prompt-section {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(220,225,240,.13);
+}
 
 .prompt-box {
   padding: 20px;
@@ -462,78 +690,29 @@ header {
   color: #e0e3ec;
 }
 
-.copy-button {
-  display: block;
-  width: 100%;
-  margin-top: 14px;
-  padding: 16px;
-  border: 1px solid rgba(220,225,240,.28);
-  border-radius: 2px;
-  background: #111a2b;
-  color: white;
-  letter-spacing: .2em;
-  font-size: 11px;
-  cursor: pointer;
-}
-
-.copy-button:active {
-  background: #1b2940;
-}
-
-/* スマートフォン */
+/* MOBILE */
 
 @media (max-width: 480px) {
-  header {
-    padding-top: 42px;
+  header { padding-top: 42px; }
+  .site-title { font-size: 20px; }
+  .site-subtitle { font-size: 9px; }
+  .site-tagline { font-size: 10px; }
+  .category-switch { gap: 13px; }
+
+  .category-button {
+    width: 108px;
+    min-height: 88px;
   }
 
-  .site-title {
-    font-size: 20px;
-  }
-
-  .site-subtitle {
-    font-size: 9px;
-  }
-
-  .site-tagline {
-    font-size: 10px;
-  }
-
-  .character-list {
-    gap: 28px 14px;
-  }
-
-  .character-name {
-    font-size: 14px;
-  }
-
-  .detail-content {
-    width: 88%;
-  }
-
-  .detail-name {
-    font-size: 24px;
-  }
-
-  .section-text {
-    font-size: 14px;
-  }
-
-  .constellation-one {
-    left: -100px;
-  }
-
-  .constellation-two {
-    right: -125px;
-  }
-
-  .constellation-three {
-    left: -110px;
-  }
-
-  .constellation-four {
-    right: -125px;
-  }
+  .character-list { gap: 28px 14px; }
+  .character-name { font-size: 17px; }
+  .detail-content { width: 88%; }
+  .detail-name { font-size: 25px; }
+  .section-text { font-size: 14px; }
+  .constellation-one { left: -100px; }
+  .constellation-two { right: -125px; }
+  .constellation-three { left: -110px; }
+  .constellation-four { right: -125px; }
 }
 </style>
 </head>
@@ -544,14 +723,13 @@ header {
 
 <div id="loading">
   <div class="loading-stars" id="loadingStars"></div>
-
   <div class="instruction">
     CATCH THE STAR
     <span>星を掴んで</span>
   </div>
 </div>
 
-<!-- CHARACTER LIST -->
+<!-- MAIN -->
 
 <div id="main">
 
@@ -616,17 +794,77 @@ header {
   <header>
     <div class="site-title">ASTRAL ARCHIVE</div>
     <div class="site-jp-title">アストラル・アーカイブ</div>
-    <div class="site-subtitle">
-      STORIES GATHERED BENEATH THE STARS
-    </div>
+    <div class="site-subtitle">STORIES GATHERED BENEATH THE STARS</div>
     <div class="site-tagline">星々の下に集う、物語の記録</div>
   </header>
+
+  <div class="page-controls">
+
+    <div class="category-switch">
+
+      <button class="category-button active" id="ocButton" onclick="switchCategory('oc')">
+        <svg class="category-icon" viewBox="0 0 70 48">
+          <polyline points="12,12 28,25 40,8 55,19 48,39 28,25 17,40"/>
+          <line x1="40" y1="8" x2="48" y2="39"/>
+          <circle cx="12" cy="12" r="2.5"/>
+          <circle cx="28" cy="25" r="2.5"/>
+          <circle cx="40" cy="8" r="3"/>
+          <circle cx="55" cy="19" r="2.5"/>
+          <circle cx="48" cy="39" r="2.5"/>
+          <circle cx="17" cy="40" r="2"/>
+        </svg>
+        <span class="category-label">OC</span>
+      </button>
+
+      <button class="category-button" id="ouButton" onclick="switchCategory('ou')">
+        <svg class="category-icon" viewBox="0 0 70 48">
+          <polyline points="10,9 25,19 17,39 32,29 39,9 53,19 60,39"/>
+          <line x1="25" y1="19" x2="39" y2="9"/>
+          <line x1="32" y1="29" x2="53" y2="19"/>
+          <circle cx="10" cy="9" r="2.5"/>
+          <circle cx="25" cy="19" r="2.5"/>
+          <circle cx="17" cy="39" r="2.5"/>
+          <circle cx="32" cy="29" r="2.5"/>
+          <circle cx="39" cy="9" r="3"/>
+          <circle cx="53" cy="19" r="2.5"/>
+          <circle cx="60" cy="39" r="2.5"/>
+        </svg>
+        <span class="category-label">OUR UNIVERSE</span>
+      </button>
+
+    </div>
+
+    <div class="list-tools">
+      <div class="character-count" id="characterCount">1 / 1 CHARACTERS</div>
+
+      <div class="search-wrap">
+        <input
+          class="search-input"
+          id="searchInput"
+          type="search"
+          placeholder="SEARCH CHARACTERS..."
+          oninput="renderCharacters()"
+        >
+        <span class="search-icon">⌕</span>
+      </div>
+    </div>
+
+  </div>
 
   <div class="character-list" id="characterList"></div>
 
 </div>
 
-<!-- CHARACTER DETAIL -->
+<!-- CONSTELLATION CUT-IN -->
+
+<div id="constellationCutin">
+  <div class="cutin-inner">
+    <svg class="cutin-svg" id="cutinSvg" viewBox="0 0 240 180"></svg>
+    <div class="cutin-name" id="cutinName"></div>
+  </div>
+</div>
+
+<!-- DETAIL -->
 
 <div id="detail">
   <div class="detail-content" id="detailContent"></div>
@@ -634,18 +872,26 @@ header {
 
 <script>
 
-/* =========================
-   CHARACTER DATA
-========================= */
+/* CHARACTER DATA */
 
 const characters = [
  {
+  category: "oc",
   name: "PAN",
   japanese: "パーン",
   reading: "パーン",
   image: "https://dangomu.github.io/IMG_2504.png",
-  profile: "男性 / 年齢不明 / 198cm（ツノ含210cm）",
-  description: "金色の大きな山羊のツノを持つ、筋肉質な体格の男性。自分の気持ちに忠実で、思ったことをすぐに口にする。ある日、空から修道院に落ちてきた。本人にも落ちてきた理由は分からない。そのまま修道院で仕事をしながら暮らしている。\n\n⭐️ うちよそ相手あり",
+
+  gender: "男性",
+  age: "不明",
+  height: "198cm（ツノ含210cm）",
+
+  appearance: "金色の大きな山羊のツノを持つ、筋肉質な体格。ピンク色の髪で、前髪は両目を完全に覆っている。",
+
+  personality: "自分の気持ちに忠実で、思ったことをすぐに口にする。",
+
+  details: "ある日修道院に落ちてきた。本人にも落ちてきた理由は分からない。そのまま修道院で仕事をしながら暮らしている。\n\n⭐️ うちよそ相手あり",
+
   prompt: `boy, masterpiece, best quality, amazing quality, very aesthetic, highly detailed anime illustration,
 
 adult man, solo, muscular male, broad shoulders, thick neck, massive pectorals, powerful masculine build,
@@ -664,20 +910,25 @@ white high-neck inner collar covering the throat, (oversized white pointed chest
 
 extremely wide voluminous black sleeves, oversized gathered sleeves, heavy draped fabric, white cuffs, black waist belt, long flowing black skirt, layered black fabric, full-length monastic habit, dark gothic silhouette`
  },
-  {
-    name: "Character 02",
-    japanese: "キャラクター名",
-    reading: "よみがな",
-    image: "https://placehold.co/600x800/101321/eeeeee?text=CHARACTER+02",
-    profile: "プロフィールをここに入力",
-    description: "キャラクターの説明をここに入力。",
-    prompt: "ここに画像生成用プロンプトを入力"
-  }
+ {
+  category: "ou",
+  name: "Character 02",
+  japanese: "キャラクター名",
+  reading: "よみがな",
+  image: "https://placehold.co/600x800/101321/eeeeee?text=CHARACTER+02",
+
+  gender: "",
+  age: "",
+  height: "",
+  appearance: "容姿をここに入力",
+  personality: "性格をここに入力",
+  details: "詳細をここに入力",
+
+  prompt: "ここに画像生成用プロンプトを入力"
+ }
 ];
 
-/* =========================
-   STAR GENERATION
-========================= */
+/* STARS */
 
 function addStars(containerId, count, subtle = false) {
   const container = document.getElementById(containerId);
@@ -704,9 +955,7 @@ function addStars(containerId, count, subtle = false) {
 addStars("loadingStars", 100);
 addStars("mainStars", 55, true);
 
-/* =========================
-   METEOR
-========================= */
+/* LOADING METEOR */
 
 let meteorTimer = null;
 let hasEntered = false;
@@ -718,7 +967,6 @@ function createMeteor() {
   meteor.className = "meteor";
 
   document.getElementById("loading").appendChild(meteor);
-
   meteor.style.animation = "meteorFlight 3.5s linear forwards";
 
   meteor.addEventListener("pointerdown", catchStar, { once: true });
@@ -738,7 +986,6 @@ function catchStar(event) {
   hasEntered = true;
 
   const meteor = event.currentTarget;
-
   clearTimeout(meteorTimer);
 
   meteor.style.animation = "starCatch .6s ease-out forwards";
@@ -759,28 +1006,176 @@ function catchStar(event) {
 
 setTimeout(createMeteor, 900);
 
-/* =========================
-   CHARACTER LIST
-========================= */
+/* CATEGORY CONSTELLATION CUT-IN */
+
+let currentCategory = "oc";
+let switching = false;
+
+const constellationPatterns = {
+  oc: {
+    name: "OC",
+    lines: [
+      [30, 45, 85, 85],
+      [85, 85, 130, 28],
+      [130, 28, 175, 68],
+      [175, 68, 150, 135],
+      [150, 135, 85, 85],
+      [85, 85, 45, 145],
+      [130, 28, 150, 135]
+    ],
+    stars: [
+      [30, 45], [85, 85], [130, 28],
+      [175, 68], [150, 135], [45, 145]
+    ]
+  },
+
+  ou: {
+    name: "OUR UNIVERSE",
+    lines: [
+      [28, 38, 72, 70],
+      [72, 70, 52, 135],
+      [52, 135, 105, 105],
+      [105, 105, 115, 35],
+      [115, 35, 165, 70],
+      [165, 70, 205, 130],
+      [72, 70, 115, 35],
+      [105, 105, 165, 70]
+    ],
+    stars: [
+      [28, 38], [72, 70], [52, 135],
+      [105, 105], [115, 35], [165, 70], [205, 130]
+    ]
+  }
+};
+
+function showConstellationCutin(category) {
+  const pattern = constellationPatterns[category];
+  const overlay = document.getElementById("constellationCutin");
+  const svg = document.getElementById("cutinSvg");
+  const name = document.getElementById("cutinName");
+
+  svg.innerHTML = "";
+
+  const lines = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  lines.setAttribute("class", "cutin-lines");
+
+  pattern.lines.forEach(points => {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", points[0]);
+    line.setAttribute("y1", points[1]);
+    line.setAttribute("x2", points[2]);
+    line.setAttribute("y2", points[3]);
+    lines.appendChild(line);
+  });
+
+  svg.appendChild(lines);
+
+  pattern.stars.forEach((point, index) => {
+    const star = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    star.setAttribute("cx", point[0]);
+    star.setAttribute("cy", point[1]);
+    star.setAttribute("r", index === 2 ? "4" : "3");
+    star.setAttribute("class", "cutin-star");
+    svg.appendChild(star);
+  });
+
+  name.textContent = pattern.name;
+
+  overlay.classList.remove("show");
+  void overlay.offsetWidth;
+  overlay.classList.add("show");
+}
+
+function switchCategory(category) {
+  if (currentCategory === category || switching) return;
+
+  switching = true;
+
+  showConstellationCutin(category);
+
+  setTimeout(() => {
+    currentCategory = category;
+
+    document.getElementById("ocButton").classList.toggle("active", category === "oc");
+    document.getElementById("ouButton").classList.toggle("active", category === "ou");
+
+    document.getElementById("searchInput").value = "";
+
+    renderCharacters();
+  }, 850);
+
+  setTimeout(() => {
+    document.getElementById("constellationCutin").classList.remove("show");
+    switching = false;
+  }, 2100);
+}
+
+/* CHARACTER LIST */
 
 function renderCharacters() {
   const list = document.getElementById("characterList");
+  const count = document.getElementById("characterCount");
+  const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
 
   list.innerHTML = "";
 
-  characters.forEach((character, index) => {
-    const card = document.createElement("div");
+  const categoryCharacters = characters.filter(character => {
+    return character.category === currentCategory;
+  });
 
+  const filteredCharacters = categoryCharacters.filter(character => {
+    const searchableText = [
+      character.name,
+      character.japanese,
+      character.reading,
+      character.appearance || "",
+      character.personality || "",
+      character.details || ""
+    ].join(" ").toLowerCase();
+
+    return searchableText.includes(keyword);
+  });
+
+  const numberMap = new Map();
+
+  categoryCharacters.forEach((character, index) => {
+    numberMap.set(character, index + 1);
+  });
+
+  count.textContent =
+    `${filteredCharacters.length} / ${categoryCharacters.length} CHARACTERS`;
+
+  if (filteredCharacters.length === 0) {
+    list.innerHTML = `
+      <div class="no-results">
+        NO CHARACTERS FOUND<br>
+        該当するキャラクターが見つかりません
+      </div>
+    `;
+    return;
+  }
+
+  filteredCharacters.forEach(character => {
+    const card = document.createElement("div");
     card.className = "character-card";
 
+    const number = String(numberMap.get(character)).padStart(3, "0");
+
     card.innerHTML = `
-      <img class="character-image" src="${character.image}" alt="">
-      <div class="character-name">${character.name}</div>
-      <div class="character-jp">${character.japanese}</div>
-      <div class="character-reading">${character.reading}</div>
+      <div class="character-image-wrap">
+        <img class="character-image" src="${character.image}" alt="">
+        <div class="character-number">No.${number}</div>
+      </div>
+      <div class="character-name"></div>
+      <div class="character-jp"></div>
     `;
 
-    card.addEventListener("click", () => openDetail(index));
+    card.querySelector(".character-name").textContent = character.name;
+    card.querySelector(".character-jp").textContent = character.japanese;
+
+    card.addEventListener("click", () => {
+      openDetail(characters.indexOf(character));
+    });
 
     list.appendChild(card);
   });
@@ -788,9 +1183,7 @@ function renderCharacters() {
 
 renderCharacters();
 
-/* =========================
-   DETAIL PAGE
-========================= */
+/* DETAIL PAGE */
 
 function openDetail(index) {
   const character = characters[index];
@@ -803,30 +1196,81 @@ function openDetail(index) {
 
     <img class="detail-image" src="${character.image}" alt="">
 
-    <h1 class="detail-name">${character.name}</h1>
-    <div class="detail-jp">${character.japanese}</div>
-    <div class="detail-reading">${character.reading}</div>
+    <h1 class="detail-name" id="detailName"></h1>
+    <div class="detail-jp" id="detailJapanese"></div>
 
     <div class="section">
       <div class="section-title">PROFILE</div>
-      <div class="section-text" id="profileText"></div>
+
+      <div class="profile-item">
+        <div class="profile-label">NAME</div>
+        <div class="section-text" id="profileName"></div>
+      </div>
+
+      <div class="profile-item">
+        <div class="profile-label">GENDER</div>
+        <div class="section-text" id="profileGender"></div>
+      </div>
+
+      <div class="profile-item">
+        <div class="profile-label">AGE</div>
+        <div class="section-text" id="profileAge"></div>
+      </div>
+
+      <div class="profile-item">
+        <div class="profile-label">HEIGHT</div>
+        <div class="section-text" id="profileHeight"></div>
+      </div>
+
+      <div class="profile-item">
+        <div class="profile-label">APPEARANCE</div>
+        <div class="section-text" id="profileAppearance"></div>
+      </div>
+
+      <div class="profile-item">
+        <div class="profile-label">PERSONALITY</div>
+        <div class="section-text" id="profilePersonality"></div>
+      </div>
+
+      <div class="profile-item">
+        <div class="profile-label">DETAIL</div>
+        <div class="section-text" id="profileDetails"></div>
+      </div>
     </div>
 
-    <div class="section">
-      <div class="section-title">DESCRIPTION</div>
-      <div class="section-text" id="descriptionText"></div>
-    </div>
+    <button class="copy-button" onclick="copyPrompt()">COPY PROMPT</button>
 
-    <div class="section">
+    <div class="prompt-section">
       <div class="section-title">PROMPT</div>
       <div class="prompt-box" id="promptText"></div>
-      <button class="copy-button" onclick="copyPrompt()">COPY PROMPT</button>
     </div>
   `;
 
-  document.getElementById("profileText").textContent = character.profile;
-  document.getElementById("descriptionText").textContent = character.description;
-  document.getElementById("promptText").textContent = character.prompt;
+  document.getElementById("detailName").textContent = character.name;
+  document.getElementById("detailJapanese").textContent = character.japanese;
+
+  document.getElementById("profileName").textContent =
+    character.name + " / " + character.japanese;
+
+  document.getElementById("profileGender").textContent =
+    character.gender || "未設定";
+
+  document.getElementById("profileAge").textContent =
+    character.age || "未設定";
+
+  document.getElementById("profileHeight").textContent =
+    character.height || "未設定";
+
+  document.getElementById("profileAppearance").textContent =
+    character.appearance || "未設定";
+
+  document.getElementById("profilePersonality").textContent =
+    character.personality || "未設定";
+
+  document.getElementById("profileDetails").textContent =
+    character.details || "未設定";
+
+  document.getElementById("promptText").textContent = character.prompt || "";
 
   detail.style.display = "block";
   detail.scrollTop = 0;
@@ -836,9 +1280,7 @@ function closeDetail() {
   document.getElementById("detail").style.display = "none";
 }
 
-/* =========================
-   COPY PROMPT
-========================= */
+/* COPY PROMPT */
 
 function copyPrompt() {
   const text = document.getElementById("promptText").textContent;
