@@ -1,209 +1,304 @@
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#050b18">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ASTRAL ARCHIVE</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#050b18;color:#e8edf7;font-family:Georgia,"Yu Mincho",serif}
-.sky{
- min-height:100svh;padding:24px 8px 18px;overflow:hidden;
- background:
- radial-gradient(ellipse at 50% 40%,#15263a 0%,#091321 55%,#030812 100%);
- position:relative;
+* {
+  box-sizing: border-box;
 }
-.sky:before{
- content:"";position:absolute;inset:0;pointer-events:none;opacity:.8;
- background-image:
- radial-gradient(1px 1px at 10% 12%,#fff,transparent),
- radial-gradient(1px 1px at 32% 22%,#fff,transparent),
- radial-gradient(2px 2px at 75% 14%,#fff,transparent),
- radial-gradient(1px 1px at 88% 38%,#fff,transparent),
- radial-gradient(1px 1px at 18% 52%,#fff,transparent),
- radial-gradient(2px 2px at 61% 67%,#fff,transparent),
- radial-gradient(1px 1px at 42% 85%,#fff,transparent),
- radial-gradient(1px 1px at 92% 91%,#fff,transparent);
- background-size:150px 160px;
+
+body {
+  margin: 0;
+  background: #080d1c;
+  color: #e8e5f2;
+  font-family: Georgia, serif;
 }
-header{position:relative;text-align:center}
-.eyebrow{font-size:8px;letter-spacing:.38em;color:#b5c5d9}
-h1{font-size:clamp(24px,7vw,34px);font-weight:400;letter-spacing:.15em;margin:8px 0 5px}
-.subtitle{font-size:8px;letter-spacing:.24em;color:#aabbd0}
-.intro{position:relative;text-align:center;font-size:10px;letter-spacing:.15em;color:#b8c6d9;margin:15px 0 4px}
-.constellation-map{position:relative;width:100%;max-width:520px;height:auto;display:block;margin:0 auto}
-.hit{cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
-.hit:active{opacity:.65}
-.figure{fill:none;stroke:#a9bacb;stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round;opacity:.82}
-.starline{fill:none;stroke:#e1e9f4;stroke-width:1;opacity:.9}
-.star{fill:#fff;filter:drop-shadow(0 0 3px #dceaff)}
-.smallstar{fill:#dce8f6;opacity:.8}
-footer{position:relative;text-align:center;color:#8192aa;font-size:8px;letter-spacing:.28em;margin-top:0}
-#archive{
- display:none;min-height:100svh;padding:28px 20px;
- background:radial-gradient(ellipse at 50% 20%,#1a2b43,#080f1d 70%);
+
+/* LOADING */
+
+#loading {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background:
+    radial-gradient(ellipse at 50% 45%, #182544 0%, #0b1228 48%, #050914 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+  transition: opacity 1.2s ease, visibility 1.2s;
 }
-.back{border:1px solid #71849e;background:transparent;color:#e8edf7;padding:10px 14px;font:inherit;font-size:10px;letter-spacing:.12em}
-.archive-title{text-align:center;font-size:26px;font-weight:400;letter-spacing:.13em;margin:65px 0 10px}
-.archive-sub{text-align:center;color:#9cacc1;font-size:9px;letter-spacing:.2em}
-.empty{max-width:330px;margin:65px auto;padding:28px 15px;text-align:center;border-top:1px solid #aabbd055;border-bottom:1px solid #aabbd055;color:#b9c6d8;font-size:12px;line-height:2.2}
-.sparkle{text-align:center;font-size:25px;color:#dce8f6;margin-bottom:12px}
-@media(max-height:720px){
- .sky{padding-top:14px}
- .intro{margin:9px 0 0}
- .constellation-map{max-height:calc(100svh - 125px)}
+
+#loading.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loading-title {
+  font-size: 30px;
+  letter-spacing: 8px;
+  color: #e8e2f5;
+  text-align: center;
+  animation: glow 3s infinite alternate;
+}
+
+.loading-sub {
+  margin-top: 15px;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: #a6abc9;
+}
+
+.loading-message {
+  margin-top: 55px;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #c3bddb;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: .15; transform: scale(.7); }
+  to { opacity: 1; transform: scale(1.4); }
+}
+
+.meteor {
+  position: absolute;
+  top: 12%;
+  right: -25%;
+  width: 190px;
+  height: 2px;
+  opacity: 0;
+  transform: rotate(135deg);
+  background: linear-gradient(to left, transparent, #fff, #c8d9ff);
+  box-shadow: 0 0 12px #d6e2ff, 0 0 28px #9bbcff;
+  animation: shooting 1.5s ease-in 1.8s forwards;
+}
+
+@keyframes shooting {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(135deg);
+  }
+  10% { opacity: 1; }
+  85% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translate(-125vw, 125vh) rotate(135deg);
+  }
+}
+
+@keyframes glow {
+  from { opacity: .65; }
+  to { opacity: 1; text-shadow: 0 0 18px #a9b9ed; }
+}
+
+/* MAIN */
+
+header {
+  text-align: center;
+  padding: 90px 20px 65px;
+  background:
+    radial-gradient(ellipse at top, #1c2948, transparent 75%);
+}
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: #a5abc8;
+}
+
+h1 {
+  font-size: 34px;
+  font-weight: normal;
+  letter-spacing: 7px;
+  margin: 25px 0 15px;
+}
+
+.subtitle {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #a5abc8;
+}
+
+.intro {
+  text-align: center;
+  padding: 30px 24px 65px;
+  color: #b9b8cc;
+  font-size: 12px;
+  line-height: 2.3;
+}
+
+section {
+  max-width: 900px;
+  margin: auto;
+  padding: 0 22px 90px;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 16px;
+  letter-spacing: 5px;
+  font-weight: normal;
+  margin-bottom: 12px;
+}
+
+.section-sub {
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #858da9;
+  margin-bottom: 38px;
+}
+
+.characters {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.character {
+  min-height: 180px;
+  border: 1px solid #303951;
+  background: linear-gradient(145deg, #17213a, #0b1122);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px 10px;
+  transition: .3s;
+}
+
+.character:hover {
+  border-color: #a7a9d0;
+  background: #1c2945;
+}
+
+.character-symbol {
+  font-size: 27px;
+  color: #c5c3e0;
+  margin-bottom: 17px;
+}
+
+.character-name {
+  font-size: 13px;
+  letter-spacing: 3px;
+}
+
+.character-info {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #939bb8;
+  margin-top: 12px;
+}
+
+footer {
+  text-align: center;
+  padding: 35px 15px;
+  border-top: 1px solid #252e43;
+  color: #77809d;
+  font-size: 9px;
+  letter-spacing: 3px;
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 27px; }
+  .characters { gap: 10px; }
+  .character { min-height: 155px; }
 }
 </style>
 </head>
+
 <body>
 
-<!-- 星座が広がるトップページ -->
-<section class="sky" id="sky">
+<!-- LOADING SCREEN -->
+
+<div id="loading">
+  <div class="loading-title">ASTRAL ARCHIVE</div>
+  <div class="loading-sub">A WORLD OF CHARACTERS</div>
+  <div class="loading-message">WAITING FOR A FALLING STAR</div>
+  <div class="meteor"></div>
+</div>
+
+<!-- MAIN PAGE -->
+
 <header>
- <div class="eyebrow">A CELESTIAL COLLECTION</div>
- <h1>ASTRAL ARCHIVE</h1>
- <div class="subtitle">THE UNIVERSE OF CHARACTERS</div>
+  <div class="eyebrow">✦ CELESTIAL COLLECTION ✦</div>
+  <h1>ASTRAL ARCHIVE</h1>
+  <div class="subtitle">CHARACTER PROMPT LIBRARY</div>
 </header>
-<div class="intro">星々を辿り、物語の扉をひらく</div>
 
-<svg class="constellation-map" viewBox="0 0 390 640" role="img" aria-label="Twelve zodiac constellations">
+<div class="intro">
+  Welcome to the archive.<br>
+  A collection of characters and their stories,<br>
+  hidden beneath the stars.
+</div>
 
-<defs>
-<!-- 牡羊座 -->
-<g id="aries">
- <path class="figure" d="M27 91 Q15 72 25 52 Q34 35 49 44 Q58 49 61 66 Q67 43 81 42 Q96 43 94 61 Q93 78 78 83 Q68 85 62 75 Q57 98 42 103 Q32 104 27 91Z M49 45 Q43 27 29 28 Q19 30 22 43 M81 43 Q86 26 99 29 Q107 32 101 44 M39 61 Q46 55 52 62 M77 60 Q84 54 88 61"/>
- <path class="starline" d="M22 30L42 43 61 66 91 44 101 30"/>
- <circle class="star" cx="22" cy="30" r="2.8"/><circle class="star" cx="42" cy="43" r="2.4"/><circle class="star" cx="61" cy="66" r="3"/><circle class="star" cx="91" cy="44" r="2.5"/><circle class="star" cx="101" cy="30" r="2.2"/>
-</g>
-<!-- 牡牛座 -->
-<g id="taurus">
- <path class="figure" d="M22 54 Q31 39 51 44 Q69 37 84 52 Q94 66 82 82 Q71 98 49 91 Q29 88 22 70Z M37 47 Q24 27 12 32 Q18 47 34 55 M75 47 Q89 27 102 32 Q96 48 81 55 M40 63 Q47 58 53 64 M68 63 Q74 58 79 64 M48 87 L44 104 M72 88 L77 104"/>
- <path class="starline" d="M12 32L35 48 53 63 78 47 102 32"/>
- <circle class="star" cx="12" cy="32" r="2.5"/><circle class="star" cx="35" cy="48" r="2.2"/><circle class="star" cx="53" cy="63" r="2.8"/><circle class="star" cx="78" cy="47" r="2.2"/><circle class="star" cx="102" cy="32" r="2.5"/>
-</g>
-<!-- 双子座 -->
-<g id="gemini">
- <path class="figure" d="M31 34 Q43 24 52 38 L47 51 Q37 57 32 47Z M67 34 Q78 24 88 38 L83 51 Q73 57 68 47Z M39 53 L35 91 M44 53 L51 91 M75 53 L69 91 M80 53 L87 91 M30 91 Q42 97 53 91 M65 91 Q77 97 90 91 M37 29 Q42 18 49 24 M72 29 Q78 18 85 24"/>
- <path class="starline" d="M37 24L42 49 39 76 51 98 M80 24L76 49 78 76 89 98"/>
- <circle class="star" cx="37" cy="24" r="2.5"/><circle class="star" cx="42" cy="49" r="2.4"/><circle class="star" cx="39" cy="76" r="2.5"/><circle class="star" cx="51" cy="98" r="2.2"/><circle class="star" cx="80" cy="24" r="2.5"/><circle class="star" cx="76" cy="49" r="2.3"/><circle class="star" cx="78" cy="76" r="2.4"/><circle class="star" cx="89" cy="98" r="2.2"/>
-</g>
-<!-- 蟹座 -->
-<g id="cancer">
- <path class="figure" d="M34 54 Q48 39 67 47 Q85 54 78 73 Q70 91 49 84 Q31 78 34 54Z M36 55 Q20 41 15 50 Q14 61 31 65 M77 55 Q94 40 100 49 Q101 60 83 65 M42 83 L28 97 M72 83 L86 97 M30 49 L20 36 M87 49 L98 36"/>
- <path class="starline" d="M20 36L35 53 55 64 82 51 98 36"/>
- <circle class="star" cx="20" cy="36" r="2.4"/><circle class="star" cx="35" cy="53" r="2.3"/><circle class="star" cx="55" cy="64" r="2.8"/><circle class="star" cx="82" cy="51" r="2.3"/><circle class="star" cx="98" cy="36" r="2.4"/>
-</g>
-<!-- 獅子座 -->
-<g id="leo">
- <path class="figure" d="M51 32 Q64 19 79 31 Q94 44 83 63 Q76 77 57 73 Q38 77 29 60 Q20 43 36 31 Q43 25 51 32Z M42 44 Q48 38 54 45 M66 45 Q72 38 78 44 M53 55 Q60 61 67 55 M57 72 L51 94 L41 105 M73 72 L80 94 L91 101 M29 57 Q12 61 18 76 Q25 86 37 78"/>
- <path class="starline" d="M24 25L42 36 60 53 82 31 96 55 80 91"/>
- <circle class="star" cx="24" cy="25" r="2.5"/><circle class="star" cx="42" cy="36" r="2.3"/><circle class="star" cx="60" cy="53" r="3"/><circle class="star" cx="82" cy="31" r="2.4"/><circle class="star" cx="96" cy="55" r="2.5"/><circle class="star" cx="80" cy="91" r="2.3"/>
-</g>
-<!-- 乙女座 -->
-<g id="virgo">
- <path class="figure" d="M56 27 Q68 20 72 34 Q76 44 66 51 Q60 56 54 50 Q45 57 46 70 L38 91 M57 51 Q66 65 61 79 L56 102 M67 51 Q79 64 76 80 L85 98 M44 34 Q35 25 29 35 Q25 43 39 49 M48 73 Q36 72 29 82 M72 34 Q84 26 91 36"/>
- <path class="starline" d="M28 31L45 45 61 54 78 37 94 57 83 91"/>
- <circle class="star" cx="28" cy="31" r="2.5"/><circle class="star" cx="45" cy="45" r="2.3"/><circle class="star" cx="61" cy="54" r="2.8"/><circle class="star" cx="78" cy="37" r="2.4"/><circle class="star" cx="94" cy="57" r="2.5"/><circle class="star" cx="83" cy="91" r="2.2"/>
-</g>
-<!-- 天秤座 -->
-<g id="libra">
- <path class="figure" d="M55 27 L55 91 M55 34 Q38 34 28 49 M55 34 Q73 34 83 49 M25 50 Q39 61 51 50 M60 50 Q73 61 87 50 M27 51 L20 75 Q37 82 47 75 L27 51 M85 51 L78 75 Q94 82 103 75 L85 51 M39 91 L72 91 M48 99 L64 99"/>
- <path class="starline" d="M18 30L39 41 56 26 78 41 99 30 85 70 56 92"/>
- <circle class="star" cx="18" cy="30" r="2.5"/><circle class="star" cx="39" cy="41" r="2.3"/><circle class="star" cx="56" cy="26" r="2.8"/><circle class="star" cx="78" cy="41" r="2.3"/><circle class="star" cx="99" cy="30" r="2.5"/><circle class="star" cx="85" cy="70" r="2.2"/><circle class="star" cx="56" cy="92" r="2.4"/>
-</g>
-<!-- 蠍座 -->
-<g id="scorpio">
- <path class="figure" d="M22 49 Q35 37 48 49 Q58 59 70 51 Q82 44 88 58 Q94 70 81 78 Q70 83 62 73 M24 50 L17 40 M32 45 L27 33 M42 47 L42 34 M81 54 Q92 46 99 35 Q105 26 99 20 M99 20 L108 19 M99 20 L103 29 M62 73 L52 91 L40 94"/>
- <path class="starline" d="M17 29L34 43 53 53 73 65 91 47 105 25"/>
- <circle class="star" cx="17" cy="29" r="2.5"/><circle class="star" cx="34" cy="43" r="2.3"/><circle class="star" cx="53" cy="53" r="2.8"/><circle class="star" cx="73" cy="65" r="2.4"/><circle class="star" cx="91" cy="47" r="2.5"/><circle class="star" cx="105" cy="25" r="2.3"/>
-</g>
-<!-- 射手座 -->
-<g id="sagittarius">
- <path class="figure" d="M28 72 Q43 52 62 55 Q76 57 83 72 L76 82 L62 76 L48 91 L39 87 L44 72Z M44 56 Q35 43 42 32 Q50 21 59 31 Q66 39 58 51 M57 51 L83 29 M83 29 L77 44 M83 29 L68 28 M62 76 L57 101 M76 82 L88 100"/>
- <path class="starline" d="M18 29L40 42 58 54 83 29 99 47 86 76"/>
- <circle class="star" cx="18" cy="29" r="2.5"/><circle class="star" cx="40" cy="42" r="2.3"/><circle class="star" cx="58" cy="54" r="2.8"/><circle class="star" cx="83" cy="29" r="2.5"/><circle class="star" cx="99" cy="47" r="2.3"/><circle class="star" cx="86" cy="76" r="2.5"/>
-</g>
-<!-- 山羊座 -->
-<g id="capricorn">
- <path class="figure" d="M22 43 Q35 30 49 43 Q60 55 69 69 Q77 80 91 72 Q103 65 96 53 Q91 44 81 51 Q75 57 83 63 M48 43 Q57 27 70 32 Q81 38 74 49 Q69 57 58 53 M69 69 Q56 77 49 90 L39 99 M77 78 L82 96 M38 99 L27 99 M82 96 L94 96"/>
- <path class="starline" d="M18 27L39 40 57 53 76 69 99 49 91 91"/>
- <circle class="star" cx="18" cy="27" r="2.5"/><circle class="star" cx="39" cy="40" r="2.3"/><circle class="star" cx="57" cy="53" r="2.8"/><circle class="star" cx="76" cy="69" r="2.4"/><circle class="star" cx="99" cy="49" r="2.5"/><circle class="star" cx="91" cy="91" r="2.3"/>
-</g>
-<!-- 水瓶座 -->
-<g id="aquarius">
- <path class="figure" d="M39 29 Q45 20 53 29 L57 43 Q65 51 72 43 L77 29 M38 49 Q48 58 58 49 Q68 42 78 51 M33 61 Q44 70 55 61 Q67 54 79 63 M40 77 Q52 85 63 77 Q74 70 85 79 M55 29 L52 17 M73 29 L81 17"/>
- <path class="starline" d="M17 29L37 42 57 31 77 45 98 31 84 77"/>
- <circle class="star" cx="17" cy="29" r="2.5"/><circle class="star" cx="37" cy="42" r="2.3"/><circle class="star" cx="57" cy="31" r="2.8"/><circle class="star" cx="77" cy="45" r="2.4"/><circle class="star" cx="98" cy="31" r="2.5"/><circle class="star" cx="84" cy="77" r="2.3"/>
-</g>
-<!-- 魚座 -->
-<g id="pisces">
- <path class="figure" d="M27 38 Q42 22 58 43 Q73 64 91 41 Q82 28 68 29 M27 38 Q42 54 58 43 M91 41 Q77 59 62 78 Q46 95 29 77 Q38 65 52 65 M62 78 Q48 61 29 77 M58 43 L62 78"/>
- <path class="starline" d="M18 28L38 40 58 43 79 60 99 76"/>
- <circle class="star" cx="18" cy="28" r="2.5"/><circle class="star" cx="38" cy="40" r="2.3"/><circle class="star" cx="58" cy="43" r="2.8"/><circle class="star" cx="79" cy="60" r="2.4"/><circle class="star" cx="99" cy="76" r="2.5"/>
-</g>
-</defs>
+<section>
+  <h2 class="section-title">CHARACTER ARCHIVE</h2>
+  <div class="section-sub">✦ EXPLORE THE COLLECTION ✦</div>
 
-<!-- 星座を3列×4段に配置。どれを押しても同じページへ -->
-<g class="hit" tabindex="0" role="button" aria-label="牡羊座" onclick="openArchive()"><use href="#aries" x="5" y="0" width="112" height="130"/></g>
-<g class="hit" tabindex="0" role="button" aria-label="牡牛座" onclick="openArchive()"><use href="#taurus" x="139" y="0" width="112" height="130"/></g>
-<g class="hit" tabindex="0" role="button" aria-label="双子座" onclick="openArchive()"><use href="#gemini" x="273" y="0" width="112" height="130"/></g>
+  <div class="characters">
 
-<g class="hit" tabindex="0" role="button" aria-label="蟹座" onclick="openArchive()"><use href="#cancer" x="5" y="160" width="112" height="130"/></g>
-<g class="hit" tabindex="0" role="button" aria-label="獅子座" onclick="openArchive()"><use href="#leo" x="139" y="160" width="112" height="130"/></g>
-<g class="hit" tabindex="0" role="button" aria-label="乙女座" onclick="openArchive()"><use href="#virgo" x="273" y="160" width="112" height="130"/></g>
+    <div class="character">
+      <div class="character-symbol">✧</div>
+      <div class="character-name">NEW CHARACTER</div>
+      <div class="character-info">COMING SOON</div>
+    </div>
 
-<g class="hit" tabindex="0" role="button" aria-label="天秤座" onclick="openArchive()"><use href="#libra" x="5" y="320" width="112" height="130"/></g>
-<g class="hit" tabindex="0" role="button" aria-label="蠍座" onclick="openArchive()"><use href="#scorpio" x="139" y="320" width="112" height="130"/></g>
-<g class="hit" tabindex="0" role="button" aria-label="射手座" onclick="openArchive()"><use href="#sagittarius" x="273" y="320" width="112" height="130"/></g>
+    <div class="character">
+      <div class="character-symbol">☾</div>
+      <div class="character-name">NEW CHARACTER</div>
+      <div class="character-info">COMING SOON</div>
+    </div>
 
-<g class="hit" tabindex="0" role="button" aria-label="山羊座" onclick="openArchive()"><use href="#capricorn" x="5" y="480" width="112" height="130"/></g>
-<g class="hit" tabindex="0" role="button" aria-label="水瓶座" onclick="openArchive()"><use href="#aquarius" x="139" y="480" width="112" height="130"/></g>
-<g class="hit" tabindex="0" role="button" aria-label="魚座" onclick="openArchive()"><use href="#pisces" x="273" y="480" width="112" height="130"/></g>
-
-<!-- 星座の周囲に散る小さな星 -->
-<g class="smallstar">
- <circle cx="18" cy="112" r="1"/><circle cx="124" cy="80" r="1.2"/><circle cx="255" cy="112" r="1"/>
- <circle cx="12" cy="290" r="1.2"/><circle cx="126" cy="260" r="1"/><circle cx="260" cy="290" r="1.2"/>
- <circle cx="28" cy="460" r="1"/><circle cx="120" cy="440" r="1.2"/><circle cx="255" cy="465" r="1"/>
- <circle cx="15" cy="620" r="1.2"/><circle cx="128" cy="600" r="1"/><circle cx="260" cy="620" r="1.2"/>
- <circle cx="195" cy="120" r="1"/><circle cx="190" cy="285" r="1.2"/><circle cx="195" cy="450" r="1"/>
- <circle cx="190" cy="615" r="1.2"/>
-</g>
-</svg>
-
-<footer>TWELVE SIGNS · ONE UNIVERSE</footer>
+  </div>
 </section>
 
-<!-- キャラクター紹介ページ -->
-<section id="archive">
- <button class="back" onclick="goBack()">← BACK TO THE STARS</button>
- <h2 class="archive-title">CHARACTER ARCHIVE</h2>
- <div class="archive-sub">A COLLECTION OF STORIES</div>
- <div class="empty">
-  <div class="sparkle">✧</div>
-  ここにキャラクターたちが並びます。<br>
-  星空に新しい物語を増やしていきましょう。
- </div>
-</section>
+<footer>
+  ASTRAL ARCHIVE · UNDER THE SAME STARS
+</footer>
 
 <script>
-function openArchive(){
- document.getElementById('sky').style.display='none';
- document.getElementById('archive').style.display='block';
- window.scrollTo(0,0);
+/* RANDOM STARS */
+
+const loading = document.getElementById("loading");
+
+for (let i = 0; i < 65; i++) {
+  const star = document.createElement("div");
+  star.className = "star";
+
+  const size = Math.random() * 2.5 + 1;
+
+  star.style.width = size + "px";
+  star.style.height = size + "px";
+  star.style.left = Math.random() * 100 + "%";
+  star.style.top = Math.random() * 100 + "%";
+  star.style.animationDelay = Math.random() * 3 + "s";
+
+  loading.appendChild(star);
 }
-function goBack(){
- document.getElementById('archive').style.display='none';
- document.getElementById('sky').style.display='block';
- window.scrollTo(0,0);
-}
-document.querySelectorAll('.hit').forEach(item=>{
- item.addEventListener('keydown',e=>{
-  if(e.key==='Enter'||e.key===' '){e.preventDefault();openArchive();}
- });
+
+/* FINISH LOADING */
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    loading.classList.add("hide");
+  }, 3500);
 });
 </script>
+
 </body>
 </html>
