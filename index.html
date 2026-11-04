@@ -8,22 +8,25 @@
 
 <style>
 :root {
-  --bg: #030407;
-  --white: #eeeeF4;
-  --muted: #9295a8;
-  --gold: #d8c9a0;
+  --navy: #050811;
+  --text: #f0f1f6;
+  --muted: #a4a9ba;
+  --gold: #c9bd9d;
 }
 
 * {
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
-  background: var(--bg);
-  color: var(--white);
+  min-height: 100%;
+  background: #030407;
+  color: var(--text);
   font-family: Georgia, "Times New Roman", serif;
-  min-height: 100vh;
+}
+
+body {
   overflow-x: hidden;
 }
 
@@ -31,7 +34,9 @@ button {
   font: inherit;
 }
 
-/* LOADING */
+/* =========================
+   LOADING
+========================= */
 
 #loading {
   position: fixed;
@@ -40,10 +45,11 @@ button {
   overflow: hidden;
   background:
     radial-gradient(ellipse at 50% 45%, #101321 0%, #070910 40%, #030407 78%);
+  opacity: 1;
 }
 
 .loading-stars,
-#detailStars {
+#mainStars {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -60,8 +66,14 @@ button {
 }
 
 @keyframes twinkle {
-  from { opacity: .15; transform: scale(.7); }
-  to { opacity: .9; transform: scale(1.5); }
+  from {
+    opacity: .12;
+    transform: scale(.7);
+  }
+  to {
+    opacity: .8;
+    transform: scale(1.5);
+  }
 }
 
 .instruction {
@@ -70,7 +82,7 @@ button {
   bottom: 8%;
   z-index: 5;
   text-align: right;
-  color: rgba(235, 235, 245, .75);
+  color: rgba(235,235,245,.75);
   letter-spacing: .22em;
   font-size: 11px;
   line-height: 2;
@@ -82,17 +94,29 @@ button {
   font-family: sans-serif;
   font-size: 10px;
   letter-spacing: .18em;
-  color: rgba(235, 235, 245, .45);
+  color: rgba(235,235,245,.45);
 }
 
 .meteor {
   position: absolute;
-  width: 130px;
-  height: 2px;
+  width: 180px;
+  height: 70px;
   z-index: 10;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transform: rotate(135deg);
   transform-origin: center;
+  background: transparent;
+}
+
+.meteor::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 34px;
+  width: 155px;
+  height: 2px;
   background: linear-gradient(
     90deg,
     transparent,
@@ -100,19 +124,20 @@ button {
     #fff 100%
   );
   box-shadow: 0 0 8px #fff, 0 0 20px rgba(160,190,255,.8);
-  animation: meteorFlight 2.8s linear forwards;
 }
 
 .meteor::after {
   content: "";
   position: absolute;
-  right: -5px;
-  top: -4px;
+  right: 15px;
+  top: 30px;
   width: 10px;
   height: 10px;
   border-radius: 50%;
   background: white;
-  box-shadow: 0 0 12px 5px white, 0 0 28px 10px rgba(160,190,255,.7);
+  box-shadow:
+    0 0 12px 5px white,
+    0 0 28px 10px rgba(160,190,255,.7);
 }
 
 @keyframes meteorFlight {
@@ -130,10 +155,6 @@ button {
   }
 }
 
-.meteor.caught {
-  animation: starCatch .6s ease-out forwards;
-}
-
 @keyframes starCatch {
   to {
     opacity: 0;
@@ -142,17 +163,110 @@ button {
   }
 }
 
-/* MAIN */
+/* =========================
+   CHARACTER LIST
+========================= */
 
 #main {
   display: none;
+  position: relative;
+  isolation: isolate;
   min-height: 100vh;
+  overflow: hidden;
   background:
-    radial-gradient(ellipse at top, #111629 0%, #070910 45%, #030407 100%);
+    radial-gradient(ellipse at 50% 0%, #101629 0%, #070b15 48%, #04060c 100%);
+}
+
+#mainStars {
+  z-index: 0;
+}
+
+/* 星座の配置 */
+
+.constellation-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.constellation {
+  position: absolute;
+  overflow: visible;
+  opacity: .11;
+}
+
+.constellation line,
+.constellation polyline {
+  fill: none;
+  stroke: #b8c9e7;
+  stroke-width: .65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.constellation circle {
+  fill: #dce7ff;
+  opacity: .65;
+}
+
+.constellation .glow-star {
+  fill: #fff;
+  opacity: .8;
+  filter: drop-shadow(0 0 3px #dce7ff);
+  animation: constellationGlow 5s ease-in-out infinite alternate;
+}
+
+@keyframes constellationGlow {
+  0% {
+    opacity: .18;
+    filter: drop-shadow(0 0 1px #dce7ff);
+  }
+  100% {
+    opacity: .9;
+    filter: drop-shadow(0 0 7px #dce7ff);
+  }
+}
+
+.constellation-one {
+  width: 210px;
+  top: 5%;
+  left: -55px;
+  transform: rotate(-12deg);
+}
+
+.constellation-two {
+  width: 220px;
+  top: 28%;
+  right: -95px;
+  transform: rotate(15deg);
+}
+
+.constellation-three {
+  width: 190px;
+  top: 57%;
+  left: -65px;
+  transform: rotate(10deg);
+}
+
+.constellation-four {
+  width: 210px;
+  top: 80%;
+  right: -95px;
+  transform: rotate(-15deg);
+}
+
+/* 一覧の文字・画像は前面 */
+
+#main header,
+#main .character-list {
+  position: relative;
+  z-index: 2;
 }
 
 header {
-  padding: 38px 7% 24px;
+  padding: 48px 7% 28px;
   text-align: center;
 }
 
@@ -162,17 +276,33 @@ header {
   font-weight: normal;
 }
 
-.site-subtitle {
+.site-jp-title {
   margin-top: 10px;
-  color: var(--muted);
   font-family: sans-serif;
-  font-size: 9px;
-  letter-spacing: .3em;
+  font-size: 12px;
+  letter-spacing: .2em;
+  color: rgba(235,235,245,.75);
+}
+
+.site-subtitle {
+  margin-top: 28px;
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: .16em;
+  line-height: 1.8;
+}
+
+.site-tagline {
+  margin-top: 8px;
+  color: rgba(235,235,245,.65);
+  font-family: sans-serif;
+  font-size: 11px;
+  letter-spacing: .12em;
 }
 
 .character-list {
   width: min(900px, 88%);
-  margin: 30px auto 80px;
+  margin: 35px auto 80px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 35px 22px;
@@ -190,7 +320,7 @@ header {
   display: block;
   background: #101321;
   border: 1px solid rgba(210,210,230,.12);
-  transition: .5s;
+  transition: opacity .3s;
 }
 
 .character-card:active .character-image {
@@ -214,11 +344,14 @@ header {
   margin-top: 5px;
   color: var(--muted);
   font-family: sans-serif;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: .15em;
 }
 
-/* DETAIL */
+/* =========================
+   CHARACTER DETAIL
+   星・星座なしのシンプルなネイビー
+========================= */
 
 #detail {
   display: none;
@@ -226,121 +359,180 @@ header {
   inset: 0;
   overflow-y: auto;
   z-index: 30;
-  background: #030407;
-}
-
-.detail-sky {
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 50% 40%, #11182a 0%, #080b15 48%, #030407 100%);
-  pointer-events: none;
-}
-
-#detailStars {
-  position: fixed;
-  z-index: 0;
+  background: #050811;
+  -webkit-overflow-scrolling: touch;
 }
 
 .detail-content {
   position: relative;
-  z-index: 2;
   width: min(650px, 88%);
   margin: auto;
-  padding: 35px 0 70px;
+  padding: 25px 0 75px;
 }
 
+/* 戻るボタン */
+
 .back-button {
-  border: 0;
-  background: none;
-  color: rgba(255,255,255,.7);
-  letter-spacing: .15em;
+  display: inline-block;
+  border: 1px solid rgba(220,225,240,.2);
+  border-radius: 2px;
+  background: rgba(255,255,255,.025);
+  color: #d8dce8;
+  letter-spacing: .14em;
   font-size: 11px;
-  padding: 12px 0;
+  padding: 12px 18px;
   cursor: pointer;
 }
 
+/* キャラクター画像 */
+
 .detail-image {
   display: block;
-  width: min(330px, 85%);
+  width: min(340px, 88%);
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  margin: 25px auto;
-  border: 1px solid rgba(220,220,240,.2);
+  margin: 32px auto;
+  border: 1px solid rgba(220,220,240,.16);
 }
+
+/* 名前 */
 
 .detail-name {
   text-align: center;
-  font-size: 26px;
-  letter-spacing: .15em;
+  font-size: 27px;
+  letter-spacing: .13em;
   font-weight: normal;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .detail-jp {
   text-align: center;
   font-family: sans-serif;
-  font-size: 13px;
-  letter-spacing: .2em;
-  margin-top: 10px;
+  font-size: 15px;
+  letter-spacing: .18em;
+  margin-top: 12px;
 }
 
 .detail-reading {
   text-align: center;
-  color: var(--muted);
-  font-size: 10px;
-  margin-top: 6px;
+  color: #9ca4b8;
+  font-family: sans-serif;
+  font-size: 11px;
+  margin-top: 8px;
+  letter-spacing: .12em;
 }
+
+/* 情報セクション */
 
 .section {
   margin-top: 42px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(220,225,240,.13);
 }
 
 .section-title {
   color: var(--gold);
-  font-size: 11px;
-  letter-spacing: .25em;
-  margin-bottom: 15px;
+  font-size: 12px;
+  letter-spacing: .22em;
+  margin-bottom: 18px;
 }
 
 .section-text {
   white-space: pre-wrap;
-  line-height: 2;
+  line-height: 2.05;
   font-family: sans-serif;
-  font-size: 13px;
-  color: rgba(240,240,248,.8);
+  font-size: 14px;
+  color: #e0e3ec;
+  overflow-wrap: anywhere;
 }
 
+/* プロンプト */
+
 .prompt-box {
-  padding: 18px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(220,220,240,.14);
+  padding: 20px;
+  background: #0b1120;
+  border: 1px solid rgba(220,225,240,.14);
+  border-radius: 3px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   font-family: sans-serif;
-  font-size: 12px;
-  line-height: 1.8;
-  color: rgba(240,240,248,.8);
+  font-size: 13px;
+  line-height: 1.9;
+  color: #e0e3ec;
 }
 
 .copy-button {
   display: block;
   width: 100%;
   margin-top: 14px;
-  padding: 14px;
-  border: 1px solid rgba(220,220,240,.3);
-  background: rgba(255,255,255,.06);
+  padding: 16px;
+  border: 1px solid rgba(220,225,240,.28);
+  border-radius: 2px;
+  background: #111a2b;
   color: white;
   letter-spacing: .2em;
-  font-size: 10px;
+  font-size: 11px;
   cursor: pointer;
 }
 
+.copy-button:active {
+  background: #1b2940;
+}
+
+/* スマートフォン */
+
 @media (max-width: 480px) {
+  header {
+    padding-top: 42px;
+  }
+
+  .site-title {
+    font-size: 20px;
+  }
+
+  .site-subtitle {
+    font-size: 9px;
+  }
+
+  .site-tagline {
+    font-size: 10px;
+  }
+
   .character-list {
     gap: 28px 14px;
   }
+
   .character-name {
     font-size: 14px;
+  }
+
+  .detail-content {
+    width: 88%;
+  }
+
+  .detail-name {
+    font-size: 24px;
+  }
+
+  .section-text {
+    font-size: 14px;
+  }
+
+  .constellation-one {
+    left: -100px;
+  }
+
+  .constellation-two {
+    right: -125px;
+  }
+
+  .constellation-three {
+    left: -110px;
+  }
+
+  .constellation-four {
+    right: -125px;
   }
 }
 </style>
@@ -348,7 +540,8 @@ header {
 
 <body>
 
-<!-- LOADING SCREEN -->
+<!-- LOADING -->
+
 <div id="loading">
   <div class="loading-stars" id="loadingStars"></div>
 
@@ -359,24 +552,91 @@ header {
 </div>
 
 <!-- CHARACTER LIST -->
+
 <div id="main">
+
+  <div id="mainStars"></div>
+
+  <div class="constellation-layer">
+
+    <svg class="constellation constellation-one" viewBox="0 0 240 220">
+      <polyline points="25,55 65,85 105,35 145,75 195,45"/>
+      <line x1="65" y1="85" x2="85" y2="150"/>
+      <line x1="85" y1="150" x2="145" y2="75"/>
+      <circle cx="25" cy="55" r="2"/>
+      <circle cx="65" cy="85" r="2"/>
+      <circle class="glow-star" cx="105" cy="35" r="3"/>
+      <circle cx="145" cy="75" r="2"/>
+      <circle cx="195" cy="45" r="2"/>
+      <circle cx="85" cy="150" r="2"/>
+    </svg>
+
+    <svg class="constellation constellation-two" viewBox="0 0 260 220">
+      <polyline points="35,105 75,65 120,85 160,35 200,80 225,145"/>
+      <line x1="75" y1="65" x2="85" y2="155"/>
+      <line x1="85" y1="155" x2="145" y2="170"/>
+      <line x1="145" y1="170" x2="200" y2="80"/>
+      <circle cx="35" cy="105" r="2"/>
+      <circle class="glow-star" cx="75" cy="65" r="3"/>
+      <circle cx="120" cy="85" r="2"/>
+      <circle cx="160" cy="35" r="2"/>
+      <circle cx="200" cy="80" r="2"/>
+      <circle cx="225" cy="145" r="2"/>
+      <circle cx="85" cy="155" r="2"/>
+      <circle cx="145" cy="170" r="2"/>
+    </svg>
+
+    <svg class="constellation constellation-three" viewBox="0 0 230 220">
+      <polyline points="30,45 75,90 115,55 145,110 180,145"/>
+      <line x1="75" y1="90" x2="65" y2="155"/>
+      <line x1="65" y1="155" x2="145" y2="110"/>
+      <circle cx="30" cy="45" r="2"/>
+      <circle cx="75" cy="90" r="2"/>
+      <circle class="glow-star" cx="115" cy="55" r="3"/>
+      <circle cx="145" cy="110" r="2"/>
+      <circle cx="180" cy="145" r="2"/>
+      <circle cx="65" cy="155" r="2"/>
+    </svg>
+
+    <svg class="constellation constellation-four" viewBox="0 0 230 220">
+      <polyline points="35,70 85,35 130,80 175,55 195,120"/>
+      <line x1="85" y1="35" x2="95" y2="130"/>
+      <line x1="95" y1="130" x2="150" y2="160"/>
+      <circle cx="35" cy="70" r="2"/>
+      <circle class="glow-star" cx="85" cy="35" r="3"/>
+      <circle cx="130" cy="80" r="2"/>
+      <circle cx="175" cy="55" r="2"/>
+      <circle cx="195" cy="120" r="2"/>
+      <circle cx="95" cy="130" r="2"/>
+      <circle cx="150" cy="160" r="2"/>
+    </svg>
+
+  </div>
+
   <header>
     <div class="site-title">ASTRAL ARCHIVE</div>
-    <div class="site-subtitle">A COLLECTION OF CHARACTERS</div>
+    <div class="site-jp-title">アストラル・アーカイブ</div>
+    <div class="site-subtitle">
+      STORIES GATHERED BENEATH THE STARS
+    </div>
+    <div class="site-tagline">星々の下に集う、物語の記録</div>
   </header>
+
   <div class="character-list" id="characterList"></div>
+
 </div>
 
 <!-- CHARACTER DETAIL -->
+
 <div id="detail">
-  <div class="detail-sky"></div>
-  <div id="detailStars"></div>
   <div class="detail-content" id="detailContent"></div>
 </div>
 
 <script>
-/* CHARACTER DATA
-   ここにキャラクター情報を追加していくよ */
+
+/* =========================
+   CHARACTER DATA
+========================= */
 
 const characters = [
   {
@@ -399,24 +659,40 @@ const characters = [
   }
 ];
 
-/* LOADING STARS */
+/* =========================
+   STAR GENERATION
+========================= */
 
-const loadingStars = document.getElementById("loadingStars");
+function addStars(containerId, count, subtle = false) {
+  const container = document.getElementById(containerId);
 
-for (let i = 0; i < 100; i++) {
-  const star = document.createElement("div");
-  star.className = "loading-star";
-  star.style.left = Math.random() * 100 + "%";
-  star.style.top = Math.random() * 100 + "%";
-  star.style.animationDelay = Math.random() * 4 + "s";
-  star.style.animationDuration = (2 + Math.random() * 4) + "s";
-  loadingStars.appendChild(star);
+  for (let i = 0; i < count; i++) {
+    const star = document.createElement("div");
+
+    star.className = "loading-star";
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+    star.style.animationDelay = Math.random() * 5 + "s";
+    star.style.animationDuration = (3 + Math.random() * 5) + "s";
+
+    if (subtle) {
+      star.style.opacity = Math.random() * .25;
+      star.style.width = "1px";
+      star.style.height = "1px";
+    }
+
+    container.appendChild(star);
+  }
 }
 
-/* METEOR */
+addStars("loadingStars", 100);
+addStars("mainStars", 55, true);
+
+/* =========================
+   METEOR
+========================= */
 
 let meteorTimer = null;
-let currentMeteor = null;
 let hasEntered = false;
 
 function createMeteor() {
@@ -424,49 +700,61 @@ function createMeteor() {
 
   const meteor = document.createElement("div");
   meteor.className = "meteor";
-  document.getElementById("loading").appendChild(meteor);
-  currentMeteor = meteor;
 
-  meteor.addEventListener("click", catchStar);
+  document.getElementById("loading").appendChild(meteor);
+
+  meteor.style.animation = "meteorFlight 3.5s linear forwards";
+
+  meteor.addEventListener("pointerdown", catchStar, { once: true });
+
   meteor.addEventListener("animationend", () => {
-    if (meteor.parentNode) meteor.remove();
+    meteor.remove();
 
     if (!hasEntered) {
-      meteorTimer = setTimeout(createMeteor, 1300);
+      meteorTimer = setTimeout(createMeteor, 1400);
     }
   }, { once: true });
 }
 
 function catchStar(event) {
   if (hasEntered) return;
+
   hasEntered = true;
 
   const meteor = event.currentTarget;
-  meteor.classList.add("caught");
 
   clearTimeout(meteorTimer);
 
+  meteor.style.animation = "starCatch .6s ease-out forwards";
+
   setTimeout(() => {
-    document.getElementById("loading").style.transition = "opacity 1.2s";
-    document.getElementById("loading").style.opacity = "0";
+    const loading = document.getElementById("loading");
+
+    loading.style.transition = "opacity 1.2s ease";
+    loading.style.opacity = "0";
 
     setTimeout(() => {
-      document.getElementById("loading").style.display = "none";
+      loading.style.display = "none";
       document.getElementById("main").style.display = "block";
     }, 1200);
-  }, 450);
+
+  }, 350);
 }
 
 setTimeout(createMeteor, 900);
 
-/* CHARACTER LIST */
+/* =========================
+   CHARACTER LIST
+========================= */
 
 function renderCharacters() {
   const list = document.getElementById("characterList");
+
   list.innerHTML = "";
 
   characters.forEach((character, index) => {
     const card = document.createElement("div");
+
     card.className = "character-card";
 
     card.innerHTML = `
@@ -477,51 +765,40 @@ function renderCharacters() {
     `;
 
     card.addEventListener("click", () => openDetail(index));
+
     list.appendChild(card);
   });
 }
 
 renderCharacters();
 
-/* DETAIL STARS */
-
-const detailStars = document.getElementById("detailStars");
-
-for (let i = 0; i < 420; i++) {
-  const star = document.createElement("div");
-  star.className = "loading-star";
-  star.style.left = Math.random() * 100 + "%";
-  star.style.top = Math.random() * 100 + "%";
-  star.style.animationDelay = Math.random() * 5 + "s";
-  star.style.animationDuration = (2 + Math.random() * 5) + "s";
-  star.style.opacity = Math.random() * .8;
-  detailStars.appendChild(star);
-}
-
-/* OPEN DETAIL */
+/* =========================
+   DETAIL PAGE
+========================= */
 
 function openDetail(index) {
-  const c = characters[index];
+  const character = characters[index];
+
   const detail = document.getElementById("detail");
   const content = document.getElementById("detailContent");
 
   content.innerHTML = `
     <button class="back-button" onclick="closeDetail()">← BACK</button>
 
-    <img class="detail-image" src="${c.image}" alt="">
+    <img class="detail-image" src="${character.image}" alt="">
 
-    <h1 class="detail-name">${c.name}</h1>
-    <div class="detail-jp">${c.japanese}</div>
-    <div class="detail-reading">${c.reading}</div>
+    <h1 class="detail-name">${character.name}</h1>
+    <div class="detail-jp">${character.japanese}</div>
+    <div class="detail-reading">${character.reading}</div>
 
     <div class="section">
       <div class="section-title">PROFILE</div>
-      <div class="section-text">${c.profile}</div>
+      <div class="section-text" id="profileText"></div>
     </div>
 
     <div class="section">
       <div class="section-title">DESCRIPTION</div>
-      <div class="section-text">${c.description}</div>
+      <div class="section-text" id="descriptionText"></div>
     </div>
 
     <div class="section">
@@ -531,7 +808,10 @@ function openDetail(index) {
     </div>
   `;
 
-  document.getElementById("promptText").textContent = c.prompt;
+  document.getElementById("profileText").textContent = character.profile;
+  document.getElementById("descriptionText").textContent = character.description;
+  document.getElementById("promptText").textContent = character.prompt;
+
   detail.style.display = "block";
   detail.scrollTop = 0;
 }
@@ -540,27 +820,51 @@ function closeDetail() {
   document.getElementById("detail").style.display = "none";
 }
 
-/* COPY PROMPT */
+/* =========================
+   COPY PROMPT
+========================= */
 
 function copyPrompt() {
   const text = document.getElementById("promptText").textContent;
+  const button = document.querySelector(".copy-button");
 
-  navigator.clipboard.writeText(text).then(() => {
-    const button = document.querySelector(".copy-button");
-    button.textContent = "COPIED ✓";
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => {
+      button.textContent = "COPIED ✓";
+
+      setTimeout(() => {
+        button.textContent = "COPY PROMPT";
+      }, 1800);
+    }).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+
+  function fallbackCopy() {
+    const textarea = document.createElement("textarea");
+
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    try {
+      document.execCommand("copy");
+      button.textContent = "COPIED ✓";
+    } catch (error) {
+      button.textContent = "SELECT AND COPY";
+    }
+
+    document.body.removeChild(textarea);
 
     setTimeout(() => {
       button.textContent = "COPY PROMPT";
     }, 1800);
-  }).catch(() => {
-    const range = document.createRange();
-    range.selectNodeContents(document.getElementById("promptText"));
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-    alert("プロンプトを選択したよ。コピーしてね。");
-  });
+  }
 }
+
 </script>
 
 </body>
